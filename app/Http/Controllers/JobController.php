@@ -11,27 +11,13 @@ class JobController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $jobs = Job::query();
+    {
+        $filters = request()->only('search', 'min_salary', 'max_salary', 'experience', 'category');
+        // we load all the jobs then we load all the employers before we filter the data
+        $jobs = Job::with('employer')->filter($filters)->get();
 
-    // Filter by search keyword in title or description
-    $jobs->when(request('search'), function ($query) {
-        $query->where('title', 'like', '%' . request('search') . '%')
-              ->orWhere('description', 'like', '%' . request('search') . '%');
-    });
-
-    // Filter by salary range
-    $jobs->when(request('min_salary'), function ($query) {
-        $query->where('salary', '>=', request('min_salary'));
-    });
-
-    $jobs->when(request('max_salary'), function ($query) {
-        $query->where('salary', '<=', request('max_salary'));
-    });
-
-    return view('job.index', ['jobs' => $jobs->get()]);
-}
-
+        return view('job.index', ['jobs' => $jobs]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -53,7 +39,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        return view('job.show', compact('job'));
+        return view('job.show', ['job' => $job->load('employer.jobs')]);
     }
 
     /**
