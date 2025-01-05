@@ -11,8 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Register the 'employer' middleware alias as part of an array.
+        $middleware->alias([
+            'employer' => \App\Http\Middleware\Employer::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();

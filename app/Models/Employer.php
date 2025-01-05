@@ -12,6 +12,8 @@ class Employer extends Model
     /** @use HasFactory<\Database\Factories\EmployerFactory> */
     use HasFactory;
 
+    protected $fillable = ['company_name'];
+
     // An employer can have multiple jobs
     public function jobs() : HasMany{
         return $this->hasMany(Job::class);
