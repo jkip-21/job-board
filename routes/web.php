@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobController;
@@ -34,6 +35,7 @@ Route::middleware('auth')->group(function () {
     // Job Application Routes
     Route::resource('job.application', JobApplicationController::class)->only(['create', 'store']);
     // Employer  routes
+
     Route::resource('employer', EmployerController::class)->only(['create', 'store']);
 
     // route to employer job listings

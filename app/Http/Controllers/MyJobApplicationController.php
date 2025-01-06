@@ -22,7 +22,10 @@ class MyJobApplicationController extends Controller
 
         // Fetch job applications with associated job data for instance counting number of applications per job
         $applications = $user->jobApplications()
-            ->with(['job'=> fn($query)=> $query->withCount('jobApplications')->withAvg('jobApplications', 'expected_salary'),'job.employer']) // Eager load the 'job' relationship
+            ->with(['job'=> fn($query)=> $query->withCount('jobApplications')
+            ->withAvg('jobApplications', 'expected_salary')
+            ->withTrashed()
+            ,'job.employer']) // Eager load the 'job' relationship
             ->latest()
             ->get();
 
